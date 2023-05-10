@@ -1,3 +1,4 @@
+library(ggplot2)
 library(shiny)
 source("utils.R")
 source("calculadora.R")
