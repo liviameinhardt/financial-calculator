@@ -6,7 +6,7 @@ source("calculadora.R")
 # define a interface UI
 ui <- fluidPage(
   
-  titlePanel("App"),
+  titlePanel("Análise Financeira"),
   
   sidebarLayout(
     
