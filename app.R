@@ -5,43 +5,50 @@ source("calculadora.R")
 
 
 # define a interface UI
-ui <- fluidPage(
+ui <- navbarPage(
+  title = "Análise Financeira",
   
-  titlePanel("Análise Financeira"),
+  tabPanel("Viabilidade do Projetos",
+           sidebarLayout(
+             sidebarPanel(
+               h3("Dados de entrada"),
+               numericInput("tx_juros", label = "Taxa de juros (%)", value = 10),
+               textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
+               actionButton("calcular", "Calcular")
+             ),
+             mainPanel(
+               tabsetPanel(
+                 tabPanel("Resultados",
+                          h3("Resultados da análise"),
+                          tableOutput("tabela_resultados")
+                 )
+               )
+             )
+           )
+  ),
   
-  sidebarLayout(
-    
-    sidebarPanel( 
-        h3("Dados de entrada"),
-        numericInput("tx_juros", label = "Taxa de juros (%)", value = 10),
-        textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)",value="-100,-100,100,100,200"),
-        actionButton("calcular", "Calcular")
-    ),
-      
-    
-    mainPanel(
-        tabsetPanel(
-          
-          tabPanel("Investimentos",
-                   h2("Resultados da Análise"),
-                   tableOutput("tabela_resultados"),
-                   plotOutput("grafico_fluxo_caixa")
-          ),
-          
-          tabPanel("Taxa de Juros",
-                   h2("Métricas em Funçao da Taxa de Juros"),
-                   tableOutput("tabela_resultados_juros"),
-                   plotOutput("grafico_vpl"),
-                   plotOutput("grafico_roi"),
-                   plotOutput("grafico_payback_simples"),
-                   plotOutput("grafico_payback_descontado")
-          )
-        )
-    )
-   
-    
-   )
+  tabPanel("Juros Simples",
+           fluidPage(
+             h2("Juros Simples Content"),
+             # Add content here
+           )
+  ),
+  
+  tabPanel("Juros Composto",
+           fluidPage(
+             h2("Juros Composto Content"),
+             # Add content here
+           )
+  ),
+  
+  tabPanel("Estatística",
+           fluidPage(
+             h2("Estatística Content"),
+             # Add content here
+           )
+  )
 )
+
 
 
 # define o servidor
