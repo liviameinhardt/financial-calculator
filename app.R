@@ -31,7 +31,24 @@ ui <- navbarPage(
            fluidPage(
              h2("Juros Simples Content"),
              # Add content here
-           )
+             sidebarLayout(
+               sidebarPanel(
+                 numericInput("capital", "Capital Inicial:", value = 1000, min = 0),
+                 numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
+                 numericInput("tempo", "Tempo (em anos):", value = 1, min = 0),
+                 actionButton("calcular3", "Calcular")
+               ),
+               mainPanel(
+                 tabsetPanel(
+                   tabPanel("Resultados",
+                            
+                            textOutput("montante")
+                   )
+                 )
+                 
+               )
+             )
+          )
   ),
   
   tabPanel("Juros Composto",
@@ -108,6 +125,18 @@ server <- function(input, output) {
       paste(tamanho_amostra)})
       #paste("Tamanho da amostra: ",tamanho_amostra)})
     
+  })
+  
+  # Botão de calcular juros simples
+  observeEvent(input$calcular3, {
+    capital <- input$capital
+    taxa <- input$taxa / 100
+    tempo <- input$tempo
+    juros <- capital * taxa * tempo
+    montante <- capital + juros
+    output$montante <- renderText({
+      paste0("O montante após ", tempo, " anos será de R$ ", round(montante, 2))
+    })
   })
   
 }
