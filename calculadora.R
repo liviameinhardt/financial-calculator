@@ -68,3 +68,20 @@ payback <- function(fluxo_caixa, taxa_juros) {
   
   return(list(payback_simples=payback_simples,payback_descontado=payback_descontado))
 }
+
+
+calcular_tamanho_amostra <- function(populacao, grau_confianca, margem_erro, proporcao = 0.5) {
+  # Calcula o valor crítico (Z-score) baseado no grau de confiança
+  z <- qnorm((1 + grau_confianca) / 2)
+  n <- (z^2 * proporcao * (1 - proporcao)) / (margem_erro^2)
+  
+  if (!is.infinite(n)) {
+    n <- ceiling(n)
+  }
+  
+  if (!is.null(populacao) && n > populacao) {
+    n <- populacao
+  }
+  
+  return(n)
+}
