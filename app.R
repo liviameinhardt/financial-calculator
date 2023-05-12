@@ -18,12 +18,25 @@ ui <- navbarPage(
                textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
                actionButton("calcular", "Calcular")
              ),
+             
              mainPanel(
                tabsetPanel(
-                 tabPanel("Resultados",
-                          h3("Resultados da análise"),
-                          tableOutput("tabela_resultados")
-                 )
+                 
+                 tabPanel("Investimentos",
+                          h2("Resultados da Análise"),
+                          tableOutput("tabela_resultados"),
+                          plotOutput("grafico_fluxo_caixa")
+                 ),
+                 
+                 tabPanel("Taxa de Juros",
+                          h2("Métricas em Funçao da Taxa de Juros"),
+                          tableOutput("tabela_resultados_juros"),
+                          plotOutput("grafico_vpl"),
+                          plotOutput("grafico_roi"),
+                          plotOutput("grafico_payback_simples"),
+                          plotOutput("grafico_payback_descontado")
+                 ),
+            
                )
              )
            )
