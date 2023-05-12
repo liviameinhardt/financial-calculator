@@ -9,6 +9,8 @@ ui <- navbarPage(
   title = "Análise Financeira",
   
   tabPanel("Viabilidade do Projetos",
+           
+           fluidPage(
            sidebarLayout(
              sidebarPanel(
                h3("Dados de entrada"),
@@ -25,14 +27,16 @@ ui <- navbarPage(
                )
              )
            )
+        )
   ),
   
   tabPanel("Juros Simples",
+           
            fluidPage(
-             h2("Juros Simples Content"),
              # Add content here
              sidebarLayout(
                sidebarPanel(
+                 h3("Dados de entrada"),
                  numericInput("capital", "Capital Inicial:", value = 1000, min = 0),
                  numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
                  numericInput("tempo", "Tempo (em anos):", value = 1, min = 0),
@@ -58,6 +62,8 @@ ui <- navbarPage(
            )
   ),
   tabPanel("Estatística",
+           
+          fluidPage(
            sidebarLayout(
              sidebarPanel(
                h3("Dados de entrada"),
@@ -76,6 +82,7 @@ ui <- navbarPage(
                )
              )
            )
+          )
   )
 )
 
@@ -134,9 +141,17 @@ server <- function(input, output) {
     tempo <- input$tempo
     juros <- capital * taxa * tempo
     montante <- capital + juros
-    output$montante <- renderText({
-      paste0("O montante após ", tempo, " anos será de R$ ", round(montante, 2))
-    })
+    
+    if (tempo == 1){
+      output$montante <- renderText({
+        paste0("O montante após ", tempo, " ano será de R$ ", round(montante, 2))
+      })
+    }
+    else {
+      output$montante <- renderText({
+        paste0("O montante após ", tempo, " anos será de R$ ", round(montante, 2))
+      })
+    }
   })
   
 }
