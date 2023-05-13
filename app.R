@@ -161,7 +161,7 @@ server <- function(input, output) {
     
     # Se a taxa é anual e o tempo é mensal, divide o tempo por 12
     else if (input$taxa_tipo == "ano" && input$tempo_tipo == "meses") {
-      tempo <- tempo / 12
+      taxa <- taxa / 12
     }
     
     # calcula o montante
