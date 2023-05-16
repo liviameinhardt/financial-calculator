@@ -52,7 +52,9 @@ ui <- navbarPage(
                  h3("Dados de entrada"),
                  numericInput("capital", "Capital Inicial:", value = 1000, min = 0),
                  numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
-                 numericInput("tempo", "Tempo (em anos):", value = 1, min = 0),
+                 selectInput("taxa_tipo", "Taxa de Juros por:", choices = c("Ano" = "ano", "Mês" = "mes")),
+                 numericInput("tempo", "Tempo:", value = 1, min = 0),
+                 selectInput("tempo_tipo", "Tempo em:", choices = c("Anos" = "anos", "Meses" = "meses")),
                  actionButton("calcular3", "Calcular")
                ),
                mainPanel(
@@ -150,10 +152,23 @@ server <- function(input, output) {
   # Botão de calcular juros simples
   observeEvent(input$calcular3, {
     capital <- input$capital
-    taxa <- input$taxa / 100
     tempo <- input$tempo
+    taxa <- input$taxa / 100
+    # Se a taxa é mensal e o tempo é anual, multiplica a taxa por 12
+    if (input$taxa_tipo == "mes" && input$tempo_tipo == "anos") {
+      taxa <- taxa * 12
+    }
+    
+    # Se a taxa é anual e o tempo é mensal, divide o tempo por 12
+    else if (input$taxa_tipo == "ano" && input$tempo_tipo == "meses") {
+      taxa <- taxa / 12
+    }
+    
+    # calcula o montante
     juros <- capital * taxa * tempo
     montante <- capital + juros
+    
+    
     
     if (tempo == 1){
       output$montante <- renderText({
