@@ -51,11 +51,17 @@ ui <- navbarPage(
                sidebarPanel(
                  h3("Dados de entrada"),
                  numericInput("capital", "Capital Inicial:", value = 1000, min = 0),
-                 numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
-                 selectInput("taxa_tipo", "Taxa de Juros por:", choices = c("Ano" = "ano", "Mês" = "mes")),
-                 numericInput("tempo", "Tempo:", value = 1, min = 0),
-                 selectInput("tempo_tipo", "Tempo em:", choices = c("Anos" = "anos", "Meses" = "meses")),
-                 actionButton("calcular3", "Calcular")
+                 fluidRow(
+                   column(7,
+                          numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
+                          numericInput("tempo", "Tempo:", value = 1, min = 0),
+                   ),
+                   column(5,
+                          selectInput("taxa_tipo", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                          selectInput("tempo_tipo", "", choices = c("Anos" = "anos", "Meses" = "meses")),
+                   ),
+               ),
+               actionButton("calcular3", "Calcular"),
                ),
                mainPanel(
                  tabsetPanel(
