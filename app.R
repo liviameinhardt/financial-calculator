@@ -174,9 +174,10 @@ server <- function(input, output) {
     juros <- capital * taxa * tempo
     montante <- capital + juros
     
-    
-    
-    if (tempo == 1){
+    # periodo em anos
+    if (input$tempo_tipo == "anos"){
+      # em anos ou ano
+      if (tempo == 1){
       output$montante <- renderText({
         paste0("O montante após ", tempo, " ano será de R$ ", round(montante, 2))
       })
@@ -186,6 +187,21 @@ server <- function(input, output) {
         paste0("O montante após ", tempo, " anos será de R$ ", round(montante, 2))
       })
     }
+    }
+    else {
+      # em meses ou mes
+      if (tempo == 1){
+        output$montante <- renderText({
+          paste0("O montante após ", tempo, " mês será de R$ ", round(montante, 2))
+        })
+      }
+      else {
+        output$montante <- renderText({
+          paste0("O montante após ", tempo, " meses será de R$ ", round(montante, 2))
+        })
+      }
+    }
+    
   })
   
 }
