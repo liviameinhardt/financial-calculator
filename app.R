@@ -64,13 +64,26 @@ ui <- navbarPage(
                actionButton("calcular3", "Calcular"),
                ),
                mainPanel(
-                 tabsetPanel(
-                   tabPanel("Resultados",
-                            
-                            textOutput("montante")
+                 fluidRow(
+                   column(4, 
+                          wellPanel(
+                            h4("Valor total final"),
+                            textOutput("totalFinal")
+                          )
+                   ),
+                   column(4, 
+                          wellPanel(
+                            h4("Valor total investido"),
+                            textOutput("totalInvestido")
+                          )
+                   ),
+                   column(4, 
+                          wellPanel(
+                            h4("Total em juros"),
+                            textOutput("totalJuros"),
+                          )
                    )
-                 )
-                 
+                  ),
                )
              )
           )
@@ -174,34 +187,15 @@ server <- function(input, output) {
     juros <- capital * taxa * tempo
     montante <- capital + juros
     
-    # periodo em anos
-    if (input$tempo_tipo == "anos"){
-      # em anos ou ano
-      if (tempo == 1){
-      output$montante <- renderText({
-        paste0("O montante após ", tempo, " ano será de R$ ", round(montante, 2))
-      })
-    }
-    else {
-      output$montante <- renderText({
-        paste0("O montante após ", tempo, " anos será de R$ ", round(montante, 2))
-      })
-    }
-    }
-    else {
-      # em meses ou mes
-      if (tempo == 1){
-        output$montante <- renderText({
-          paste0("O montante após ", tempo, " mês será de R$ ", round(montante, 2))
-        })
-      }
-      else {
-        output$montante <- renderText({
-          paste0("O montante após ", tempo, " meses será de R$ ", round(montante, 2))
-        })
-      }
-    }
-    
+    output$totalInvestido <- renderText({
+      paste0("R$ ", capital)
+    })
+    output$totalFinal <- renderText({
+      paste0("R$ ", round(montante, 2))
+    })
+    output$totalJuros <- renderText({
+      paste0("R$ ", round(juros, 2))
+    })
   })
   
 }
