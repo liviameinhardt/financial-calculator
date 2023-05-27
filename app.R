@@ -90,9 +90,48 @@ ui <- navbarPage(
   ),
   
   tabPanel("Juros Composto",
+           
            fluidPage(
-             h2("Juros Composto Content"),
              # Add content here
+             sidebarLayout(
+               sidebarPanel(
+                 h3("Dados de entrada"),
+                 numericInput("capital2", "Capital Inicial:", value = 1000, min = 0),
+                 fluidRow(
+                   column(7,
+                          numericInput("taxa2", "Taxa de Juros (em %):", value = 5, min = 0),
+                          numericInput("tempo2", "Tempo:", value = 1, min = 0),
+                   ),
+                   column(5,
+                          selectInput("taxa_tipo2", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                          selectInput("tempo_tipo2", "", choices = c("Anos" = "anos", "Meses" = "meses")),
+                   ),
+                 ),
+                 actionButton("calcular4", "Calcular"),
+               ),
+               mainPanel(
+                 fluidRow(
+                   column(4, 
+                          wellPanel(
+                            h4("Valor total final"),
+                            textOutput("totalFinal2")
+                          )
+                   ),
+                   column(4, 
+                          wellPanel(
+                            h4("Valor total investido"),
+                            textOutput("totalInvestido2")
+                          )
+                   ),
+                   column(4, 
+                          wellPanel(
+                            h4("Total em juros"),
+                            textOutput("totalJuros2"),
+                          )
+                   )
+                 ),
+               )
+             )
            )
   ),
   tabPanel("Estatística",
@@ -194,6 +233,36 @@ server <- function(input, output) {
       paste0("R$ ", round(montante, 2))
     })
     output$totalJuros <- renderText({
+      paste0("R$ ", round(juros, 2))
+    })
+  })
+  
+  # Botão de calcular juros composto
+  observeEvent(input$calcular4, {
+    capital <- input$capital2
+    tempo <- input$tempo2
+    taxa <- input$taxa2 / 100
+    # Se a taxa é mensal e o tempo é anual, multiplica a taxa por 12
+    if (input$taxa_tipo2 == "mes" && input$tempo_tipo2 == "anos") {
+      tempo <- tempo * 12
+    }
+    
+    # Se a taxa é anual e o tempo é mensal, divide o tempo por 12
+    else if (input$taxa_tipo2 == "ano" && input$tempo_tipo2 == "meses") {
+      tempo <- tempo / 12
+    }
+    
+    # calcula o montante
+    montante <- capital*(taxa+1)**tempo
+    juros <- montante - capital
+    
+    output$totalInvestido2 <- renderText({
+      paste0("R$ ", capital)
+    })
+    output$totalFinal2 <- renderText({
+      paste0("R$ ", round(montante, 2))
+    })
+    output$totalJuros2 <- renderText({
       paste0("R$ ", round(juros, 2))
     })
   })
