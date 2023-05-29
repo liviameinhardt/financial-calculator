@@ -85,3 +85,12 @@ calcular_tamanho_amostra <- function(populacao, grau_confianca, margem_erro, pro
   
   return(n)
 }
+
+calcular_erro_amostral <- function(grau_confianca, proporcao, tamanho_populacao) {
+  z <- qnorm((1 + grau_confianca) / 2)  # Valor crítico baseado no nível de confiança
+  
+  erro_amostral <- z * sqrt((proporcao * (1 - proporcao)) / tamanho_populacao)
+  
+  return(round(erro_amostral*100, digits=3))
+}
+

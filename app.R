@@ -1,11 +1,13 @@
 library(ggplot2)
 library(shiny)
+library(shinythemes)
 source("utils.R")
 source("calculadora.R")
 
 
 # define a interface UI
 ui <- navbarPage(
+  theme = shinytheme("darkly"),
   title = "Análise Financeira",
   
   tabPanel("Viabilidade do Projetos",
@@ -149,8 +151,20 @@ ui <- navbarPage(
              mainPanel(
                tabsetPanel(
                  tabPanel("Resultados",
-                          h3("Tamanho da Amostra"),
-                          textOutput("tamanho_amostra")
+                    fluidRow(
+                      column(4, 
+                             wellPanel(
+                               h4("Tamanho da Amostra"),
+                               textOutput("tamanho_amostra")
+                             )
+                      ),
+                      column(5, 
+                             wellPanel(
+                               h4("Erro Amostral - Proporcão (%)"),
+                               textOutput("erro_amostral")
+                             )
+                      )
+                    )
                  )
                )
              )
@@ -205,6 +219,10 @@ server <- function(input, output) {
       paste(tamanho_amostra)})
       #paste("Tamanho da amostra: ",tamanho_amostra)})
     
+    output$erro_amostral <- renderText({
+      erro_amostral <- calcular_erro_amostral(confianca, proporcao, populacao)
+      paste(erro_amostral)
+    })
   })
   
   # Botão de calcular juros simples
