@@ -6,10 +6,11 @@ source("calculadora.R")
 library(bslib)
 thematic::thematic_shiny()
 
+
 # define a interface UI
 ui <- navbarPage(
   title = "Análise Financeira",
-  theme = shinytheme("darkly"),
+  
   checkboxInput(
     inputId = "themeToggle",
     label = icon("sun")
@@ -154,8 +155,8 @@ ui <- navbarPage(
                actionButton("calcular2", "Calcular")
              ),
              mainPanel(
-               tabsetPanel(
-                 tabPanel("Resultados",
+               #tabsetPanel(
+                 #tabPanel("Resultados",
                     fluidRow(
                       column(4, 
                              wellPanel(
@@ -166,12 +167,12 @@ ui <- navbarPage(
                       column(5, 
                              wellPanel(
                                h4("Erro Amostral - Proporção (%)"),
-                               textOutput("erro_amostral")
+                               textOutput("erro_amostral_prop")
                              )
                       )
                     )
-                 )
-               )
+                 #)
+               #)
              )
            )
           )
@@ -182,9 +183,6 @@ ui <- navbarPage(
 
 # define o servidor
 server <- function(input, output) {
-  output$table <- DT::renderDT({
-    iris
-  })
   
   # reage ao botão calcular
   observeEvent(input$calcular, {
@@ -225,10 +223,11 @@ server <- function(input, output) {
       paste(tamanho_amostra)})
       #paste("Tamanho da amostra: ",tamanho_amostra)})
     
-    output$erro_amostral <- renderText({
-      erro_amostral <- calcular_erro_amostral(confianca, proporcao, populacao)
-      paste(erro_amostral)
+    output$erro_amostral_prop <- renderText({
+      erro_amostral_prop <- calcular_erro_amostral_prop(confianca, proporcao, populacao)
+      paste(erro_amostral_prop)
     })
+    
   })
   
   # Botão de calcular juros simples
