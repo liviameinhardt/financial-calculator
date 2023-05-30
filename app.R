@@ -3,45 +3,50 @@ library(shiny)
 library(shinythemes)
 source("utils.R")
 source("calculadora.R")
-
+library(bslib)
+thematic::thematic_shiny()
 
 # define a interface UI
 ui <- navbarPage(
-  theme = shinytheme("darkly"),
   title = "Análise Financeira",
+  theme = shinytheme("darkly"),
+  checkboxInput(
+    inputId = "themeToggle",
+    label = icon("sun")
+  ),
+  includeScript(path = "themes.js"),
   
   tabPanel("Viabilidade do Projetos",
-           
            fluidPage(
-           sidebarLayout(
-             sidebarPanel(
-               h3("Dados de entrada"),
-               numericInput("tx_juros", label = "Taxa de juros (%)", value = 10),
-               textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
-               actionButton("calcular", "Calcular")
-             ),
-             
-             mainPanel(
-               tabsetPanel(
-                 
-                 tabPanel("Investimentos",
-                          h2("Resultados da Análise"),
-                          tableOutput("tabela_resultados"),
-                          plotOutput("grafico_fluxo_caixa")
-                 ),
-                 
-                 tabPanel("Taxa de Juros",
-                          h2("Métricas em Funçao da Taxa de Juros"),
-                          tableOutput("tabela_resultados_juros"),
-                          plotOutput("grafico_vpl"),
-                          plotOutput("grafico_roi"),
-                          plotOutput("grafico_payback_simples"),
-                          plotOutput("grafico_payback_descontado")
-                 ),
-            
+             sidebarLayout(
+               sidebarPanel(
+                 h3("Dados de entrada"),
+                 numericInput("tx_juros", label = "Taxa de juros (%)", value = 10),
+                 textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
+                 actionButton("calcular", "Calcular")
+               ),
+               
+               mainPanel(
+                 tabsetPanel(
+                   
+                   tabPanel("Investimentos",
+                            h2("Resultados da Análise"),
+                            tableOutput("tabela_resultados"),
+                            plotOutput("grafico_fluxo_caixa")
+                   ),
+                   
+                   tabPanel("Taxa de Juros",
+                            h2("Métricas em Funçao da Taxa de Juros"),
+                            tableOutput("tabela_resultados_juros"),
+                            plotOutput("grafico_vpl"),
+                            plotOutput("grafico_roi"),
+                            plotOutput("grafico_payback_simples"),
+                            plotOutput("grafico_payback_descontado")
+                   ),
+              
+                 )
                )
              )
-           )
         )
   ),
   
@@ -160,7 +165,7 @@ ui <- navbarPage(
                       ),
                       column(5, 
                              wellPanel(
-                               h4("Erro Amostral - Proporcão (%)"),
+                               h4("Erro Amostral - Proporção (%)"),
                                textOutput("erro_amostral")
                              )
                       )
@@ -177,8 +182,9 @@ ui <- navbarPage(
 
 # define o servidor
 server <- function(input, output) {
-  
-
+  output$table <- DT::renderDT({
+    iris
+  })
   
   # reage ao botão calcular
   observeEvent(input$calcular, {
