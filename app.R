@@ -1,209 +1,246 @@
 library(ggplot2)
 library(shiny)
+library(shinythemes)
 source("utils.R")
 source("calculadora.R")
 
-
 # define a interface UI
 ui <- navbarPage(
+  theme = shinytheme("darkly"),  # Define o tema do aplicativo
   title = "Análise Financeira",
+  
+  tags$head(
+    tags$style(HTML("
+      .my-input {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      
+      .my-input label {
+        width: 200px;
+        margin-right: 10px;
+      }
+      
+      .my-input .form-control {
+        flex-grow: 1;
+      }
+    "))
+  ),
+  
+  
   
   tabPanel("Viabilidade do Projetos",
            
            fluidPage(
-           sidebarLayout(
-             sidebarPanel(
-               h3("Dados de entrada"),
-               numericInput("tx_juros", label = "Taxa de juros (%)", value = 10),
-               textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
-               actionButton("calcular", "Calcular")
-             ),
-             
-             mainPanel(
-               tabsetPanel(
-                 
-                 tabPanel("Investimentos",
-                          h2("Resultados da Análise"),
-                          tableOutput("tabela_resultados"),
-                          plotOutput("grafico_fluxo_caixa")
+             sidebarLayout(
+               sidebarPanel(
+                 h3("Dados de entrada"),
+                 div(class = "my-input",
+                     numericInput("tx_juros", label = "Taxa de juros (%)", value = 10)
                  ),
-                 
-                 tabPanel("Taxa de Juros",
-                          h2("Métricas em Funçao da Taxa de Juros"),
-                          tableOutput("tabela_resultados_juros"),
-                          plotOutput("grafico_vpl"),
-                          plotOutput("grafico_roi"),
-                          plotOutput("grafico_payback_simples"),
-                          plotOutput("grafico_payback_descontado")
+                 div(class = "my-input",
+                     textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200")
                  ),
-            
+                 actionButton("calcular", "Calcular")
+               ),
+               
+               mainPanel(
+                 tabsetPanel(
+                   
+                   tabPanel("Investimentos",
+                            h2("Resultados da Análise"),
+                            tableOutput("tabela_resultados"),
+                            plotOutput("grafico_fluxo_caixa")
+                   ),
+                   
+                   tabPanel("Taxa de Juros",
+                            h2("Métricas em Função da Taxa de Juros"),
+                            tableOutput("tabela_resultados_juros"),
+                            plotOutput("grafico_vpl"),
+                            plotOutput("grafico_roi"),
+                            plotOutput("grafico_payback_simples"),
+                            plotOutput("grafico_payback_descontado")
+                   ),
+                   
+                 )
                )
              )
            )
-        )
   ),
   
   tabPanel("Juros Simples",
            
            fluidPage(
-             # Add content here
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInput("capital", "Capital Inicial:", value = 1000, min = 0),
-                 fluidRow(
-                   column(7,
-                          numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
-                          numericInput("tempo", "Tempo:", value = 1, min = 0),
-                   ),
-                   column(5,
-                          selectInput("taxa_tipo", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
-                          selectInput("tempo_tipo", "", choices = c("Anos" = "anos", "Meses" = "meses")),
-                   ),
+                 div(class = "my-input",
+                     numericInput("capital", "Capital Inicial:", value = 1000, min = 0)
+                 ),
+                 div(class = "my-input",
+                     fluidRow(
+                       column(7,
+                              numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
+                              numericInput("tempo", "Tempo:", value = 1, min = 0)
+                       ),
+                       column(5,
+                              selectInput("taxa_tipo", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                              selectInput("tempo_tipo", "", choices = c("Anos" = "anos", "Meses" = "meses"))
+                       )
+                     )
+                 ),
+                 actionButton("calcular3", "Calcular")
                ),
-               actionButton("calcular3", "Calcular"),
-               ),
+               
                mainPanel(
                  fluidRow(
-                   column(4, 
+                   column(4,
                           wellPanel(
                             h4("Valor total final"),
                             textOutput("totalFinal")
                           )
                    ),
-                   column(4, 
+                   column(4,
                           wellPanel(
                             h4("Valor total investido"),
                             textOutput("totalInvestido")
                           )
                    ),
-                   column(4, 
+                   column(4,
                           wellPanel(
                             h4("Total em juros"),
-                            textOutput("totalJuros"),
+                            textOutput("totalJuros")
                           )
                    )
-                  ),
+                 )
                )
              )
-          )
+           )
   ),
   
   tabPanel("Juros Composto",
            
            fluidPage(
-             # Add content here
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInput("capital2", "Capital Inicial:", value = 1000, min = 0),
-                 fluidRow(
-                   column(7,
-                          numericInput("taxa2", "Taxa de Juros (em %):", value = 5, min = 0),
-                          numericInput("tempo2", "Tempo:", value = 1, min = 0),
-                   ),
-                   column(5,
-                          selectInput("taxa_tipo2", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
-                          selectInput("tempo_tipo2", "", choices = c("Anos" = "anos", "Meses" = "meses")),
-                   ),
+                 div(class = "my-input",
+                     numericInput("capital2", "Capital Inicial:", value = 1000, min = 0)
                  ),
-                 actionButton("calcular4", "Calcular"),
+                 div(class = "my-input",
+                     fluidRow(
+                       column(7,
+                              numericInput("taxa2", "Taxa de Juros (em %):", value = 5, min = 0),
+                              numericInput("tempo2", "Tempo:", value = 1, min = 0)
+                       ),
+                       column(5,
+                              selectInput("taxa_tipo2", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                              selectInput("tempo_tipo2", "", choices = c("Anos" = "anos", "Meses" = "meses"))
+                       )
+                     )
+                 ),
+                 actionButton("calcular4", "Calcular")
                ),
+               
                mainPanel(
                  fluidRow(
-                   column(4, 
+                   column(4,
                           wellPanel(
                             h4("Valor total final"),
                             textOutput("totalFinal2")
                           )
                    ),
-                   column(4, 
+                   column(4,
                           wellPanel(
                             h4("Valor total investido"),
                             textOutput("totalInvestido2")
                           )
                    ),
-                   column(4, 
+                   column(4,
                           wellPanel(
                             h4("Total em juros"),
-                            textOutput("totalJuros2"),
+                            textOutput("totalJuros2")
                           )
                    )
-                 ),
+                 )
                )
              )
            )
   ),
   tabPanel("Estatística",
            
-          fluidPage(
-           sidebarLayout(
-             sidebarPanel(
-               h3("Dados de entrada"),
-               numericInput("populacao", label = "População", value = 210000000),
-               selectInput("grau_confianca", label = "Grau de Confiança (%)", choices = c("99", "95", "90", "85", "Outro")),
-               numericInput("margem_erro", label = "Margem de Erro (%)", value = 1),
-               numericInput("proporcao", label = "Proporção (%)", value = 50),
-               actionButton("calcular2", "Calcular")
-             ),
-             mainPanel(
-               tabsetPanel(
-                 tabPanel("Resultados",
-                          h3("Tamanho da Amostra"),
-                          textOutput("tamanho_amostra")
+           fluidPage(
+             sidebarLayout(
+               sidebarPanel(
+                 h3("Dados de entrada"),
+                 div(class = "my-input",
+                     numericInput("populacao", label = "População", value = 210000000)
+                 ),
+                 div(class = "my-input",
+                     selectInput("grau_confianca", label = "Grau de Confiança (%)", choices = c("99", "95", "90", "85", "Outro"))
+                 ),
+                 div(class = "my-input",
+                     numericInput("margem_erro", label = "Margem de Erro (%)", value = 1)
+                 ),
+                 div(class = "my-input",
+                     numericInput("proporcao", label = "Proporção (%)", value = 50)
+                 ),
+                 actionButton("calcular2", "Calcular")
+               ),
+               mainPanel(
+                 tabsetPanel(
+                   tabPanel("Resultados",
+                            h3("Tamanho da Amostra"),
+                            textOutput("tamanho_amostra")
+                   )
                  )
                )
              )
            )
-          )
   )
 )
-
-
 
 # define o servidor
 server <- function(input, output) {
   
-
-  
   # reage ao botão calcular
   observeEvent(input$calcular, {
     
-    #trata o input
+    # trata o input
     fluxo_caixa <- string_para_vetor(input$fluxo_caixa)
-    tx_juros <- input$tx_juros/100
+    tx_juros <- input$tx_juros / 100
     
-    #trata o output
+    # trata o output
     
-    #analise de investimento
+    # análise de investimento
     output$tabela_resultados <- renderTable({ gerar_tabela_investimento(fluxo_caixa, tx_juros) })
-    output$grafico_fluxo_caixa <- renderPlot({grafico_fluxo_caixa(fluxo_caixa)})
+    output$grafico_fluxo_caixa <- renderPlot({ grafico_fluxo_caixa(fluxo_caixa) })
     
-    
-    #analise de taxa de juros
-    tabela_func_juros <-  gerar_tabela_juros(fluxo_caixa)
-    output$tabela_resultados_juros <- renderTable({tabela_func_juros })
-    output$grafico_vpl <- renderPlot({grafico_juros(tabela_func_juros,"vpl",tx_juros*100)})
-    output$grafico_roi <- renderPlot({grafico_juros(tabela_func_juros,"roi",tx_juros*100)})
-    output$grafico_payback_simples <- renderPlot({grafico_juros(tabela_func_juros,"payback_simples",tx_juros*100)})
-    output$grafico_payback_descontado <- renderPlot({grafico_juros(tabela_func_juros,"payback_descontado",tx_juros*100)})
+    # análise de taxa de juros
+    tabela_func_juros <- gerar_tabela_juros(fluxo_caixa)
+    output$tabela_resultados_juros <- renderTable({ tabela_func_juros })
+    output$grafico_vpl <- renderPlot({ grafico_juros(tabela_func_juros, "vpl", tx_juros * 100) })
+    output$grafico_roi <- renderPlot({ grafico_juros(tabela_func_juros, "roi", tx_juros * 100) })
+    output$grafico_payback_simples <- renderPlot({ grafico_juros(tabela_func_juros, "payback_simples", tx_juros * 100) })
+    output$grafico_payback_descontado <- renderPlot({ grafico_juros(tabela_func_juros, "payback_descontado", tx_juros * 100) })
     
   })
   
-  #Botão de Calcular de "Estatísticas"
+  # Botão de Calcular de "Estatísticas"
   observeEvent(input$calcular2, {
     
-    #trata o input
+    # trata o input
     populacao <- input$populacao
-    confianca <- as.numeric(input$grau_confianca)/100
-    margem_erro <- as.numeric(input$margem_erro)/100
-    proporcao <- as.numeric(input$proporcao)/100
+    confianca <- as.numeric(input$grau_confianca) / 100
+    margem_erro <- as.numeric(input$margem_erro) / 100
+    proporcao <- as.numeric(input$proporcao) / 100
     
-    #analise estatistica: tamanho de amostra
+    # análise estatística: tamanho de amostra
     output$tamanho_amostra <- renderText({
       tamanho_amostra <- calcular_tamanho_amostra(populacao, confianca, margem_erro, proporcao)
-      paste(tamanho_amostra)})
-      #paste("Tamanho da amostra: ",tamanho_amostra)})
+      paste(tamanho_amostra)
+    })
     
   })
   
@@ -216,12 +253,10 @@ server <- function(input, output) {
     if (input$taxa_tipo == "mes" && input$tempo_tipo == "anos") {
       taxa <- taxa * 12
     }
-    
     # Se a taxa é anual e o tempo é mensal, divide o tempo por 12
     else if (input$taxa_tipo == "ano" && input$tempo_tipo == "meses") {
-      taxa <- taxa / 12
+      tempo <- tempo / 12
     }
-    
     # calcula o montante
     juros <- capital * taxa * tempo
     montante <- capital + juros
@@ -246,14 +281,12 @@ server <- function(input, output) {
     if (input$taxa_tipo2 == "mes" && input$tempo_tipo2 == "anos") {
       tempo <- tempo * 12
     }
-    
     # Se a taxa é anual e o tempo é mensal, divide o tempo por 12
     else if (input$taxa_tipo2 == "ano" && input$tempo_tipo2 == "meses") {
       tempo <- tempo / 12
     }
-    
     # calcula o montante
-    montante <- capital*(taxa+1)**tempo
+    montante <- capital * (taxa + 1) ** tempo
     juros <- montante - capital
     
     output$totalInvestido2 <- renderText({
@@ -266,9 +299,7 @@ server <- function(input, output) {
       paste0("R$ ", round(juros, 2))
     })
   })
-  
 }
 
-
-# run  app
+# run app
 shinyApp(ui = ui, server = server)
