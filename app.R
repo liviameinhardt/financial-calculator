@@ -75,19 +75,19 @@ ui <- navbarPage(
                  fluidRow(
                    column(4, 
                           wellPanel(
-                            h4("Valor total final"),
+                            h5("Valor total final"),
                             textOutput("totalFinal")
                           )
                    ),
                    column(4, 
                           wellPanel(
-                            h4("Valor total investido"),
+                            h5("Valor total investido"),
                             textOutput("totalInvestido")
                           )
                    ),
                    column(4, 
                           wellPanel(
-                            h4("Total em juros"),
+                            h5("Total em juros"),
                             textOutput("totalJuros"),
                           )
                    )
@@ -121,19 +121,19 @@ ui <- navbarPage(
                  fluidRow(
                    column(4, 
                           wellPanel(
-                            h4("Valor total final"),
+                            h5("Valor total final"),
                             textOutput("totalFinal2")
                           )
                    ),
                    column(4, 
                           wellPanel(
-                            h4("Valor total investido"),
+                            h5("Valor total investido"),
                             textOutput("totalInvestido2")
                           )
                    ),
                    column(4, 
                           wellPanel(
-                            h4("Total em juros"),
+                            h5("Total em juros"),
                             textOutput("totalJuros2"),
                           )
                    )
@@ -160,13 +160,13 @@ ui <- navbarPage(
                     fluidRow(
                       column(4, 
                              wellPanel(
-                               h4("Tamanho da Amostra"),
+                               h5("Tamanho da Amostra"),
                                textOutput("tamanho_amostra")
                              )
                       ),
                       column(5, 
                              wellPanel(
-                               h4("Erro Amostral - Proporção (%)"),
+                               h5("Erro Amostral - Proporção (%)"),
                                textOutput("erro_amostral_prop")
                              )
                       )
