@@ -4,25 +4,24 @@ library(shinythemes)
 source("utils.R")
 source("calculadora.R")
 library(bslib)
+library(shinyWidgets)
 thematic::thematic_shiny()
 
 
 # define a interface UI
 ui <- navbarPage(
   title = "Análise Financeira",
-  
-  checkboxInput(
+  prettySwitch(
     inputId = "themeToggle",
-    label = icon("sun")
+    label = "DarkMode"
   ),
   includeScript(path = "themes.js"),
-  
   tabPanel("Viabilidade do Projetos",
            fluidPage(
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInput("tx_juros", label = "Taxa de juros (%)", value = 10),
+                 numericInputIcon("tx_juros", label = "Taxa de juros", value = 10,icon = list(NULL, icon("percent"))),
                  textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
                  actionButton("calcular", "Calcular")
                ),
@@ -58,10 +57,10 @@ ui <- navbarPage(
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInput("capital", "Capital Inicial:", value = 1000, min = 0),
+                 numericInputIcon("capital", "Capital Inicial:", value = 1000, min = 0, icon = list(icon("dollar-sign"))),
                  fluidRow(
                    column(7,
-                          numericInput("taxa", "Taxa de Juros (em %):", value = 5, min = 0),
+                          numericInputIcon("taxa", "Taxa de Juros:", value = 5, min = 0,icon = list(NULL, icon("percent"))),
                           numericInput("tempo", "Tempo:", value = 1, min = 0),
                    ),
                    column(5,
@@ -104,10 +103,10 @@ ui <- navbarPage(
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInput("capital2", "Capital Inicial:", value = 1000, min = 0),
+                 numericInputIcon("capital2", "Capital Inicial:", value = 1000, min = 0, icon = list(icon("dollar-sign"))),
                  fluidRow(
                    column(7,
-                          numericInput("taxa2", "Taxa de Juros (em %):", value = 5, min = 0),
+                          numericInputIcon("taxa2", "Taxa de Juros:", value = 5, min = 0,icon = list(NULL, icon("percent"))),
                           numericInput("tempo2", "Tempo:", value = 1, min = 0),
                    ),
                    column(5,
@@ -148,10 +147,10 @@ ui <- navbarPage(
            sidebarLayout(
              sidebarPanel(
                h3("Dados de entrada"),
-               numericInput("populacao", label = "População", value = 210000000),
-               selectInput("grau_confianca", label = "Grau de Confiança (%)", choices = c("99", "95", "90", "85", "Outro")),
-               numericInput("margem_erro", label = "Margem de Erro (%)", value = 1),
-               numericInput("proporcao", label = "Proporção (%)", value = 50),
+               numericInput("populacao", label = "População", value = 210000000, min=0),
+               numericInputIcon("grau_confianca", label = "Grau de Confiança:", value = 95, min=0, max=100,icon = list(NULL, icon("percent"))),
+               numericInputIcon("margem_erro", label = "Margem de Erro:", value = 1, min=0, max=100,icon = list(NULL, icon("percent"))),
+               numericInputIcon("proporcao", label = "Proporção: ",icon = list(NULL, icon("percent")), value = 50, min=0, max=100),
                actionButton("calcular2", "Calcular")
              ),
              mainPanel(

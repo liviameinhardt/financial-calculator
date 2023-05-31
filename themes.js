@@ -31,9 +31,8 @@ const lightTheme = newLink(themes.light);
 head.appendChild(lightTheme);
 
 // toggle switch event listener
-const toggle = document.getElementById('themeToggle');
-toggle.addEventListener('change', function(event) {
-    if (event.target.checked) {
+$(document).on("change", "#themeToggle", function(event) {
+    if ($(this).prop('checked')) {
         removeLink(themes.light);
         head.appendChild(darkTheme);
     } else {
