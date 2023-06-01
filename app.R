@@ -15,6 +15,44 @@ ui <- navbarPage(
     inputId = "themeToggle",
     label = "DarkMode"
   ),
+  tags$head(
+    tags$style(HTML("
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .shiny-input-container {
+        width: 100%;
+      }
+      
+      .selectize-control {
+        height: 38px;
+        padding: 0;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+      .selectize-input {
+        height: 38px;
+        padding: 6px 12px;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+      .selectize-dropdown {
+        background-color: #f9f9f9;
+        color: #333;
+        border: 1px solid #ccc;
+      }
+      input[type=number] {
+        height: 38px;
+        padding: 6px 12px;
+        background-color: #f9f9f9;
+        color: #333;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+    "))
+  ),
   includeScript(path = "themes.js"),
   tabPanel("Viabilidade do Projetos",
            fluidPage(
@@ -57,15 +95,15 @@ ui <- navbarPage(
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInputIcon("capital", "Capital Inicial:", value = 1000, min = 0, icon = list(icon("dollar-sign"))),
+                 numericInputIcon("capital", "Capital Inicial", value = 1000, min = 0, icon = list(icon("dollar-sign"))),
                  fluidRow(
                    column(7,
-                          numericInputIcon("taxa", "Taxa de Juros:", value = 5, min = 0,icon = list(NULL, icon("percent"))),
-                          numericInput("tempo", "Tempo:", value = 1, min = 0),
+                          numericInputIcon("taxa", "Taxa de Juros", value = 5, min = 0,icon = list(NULL, icon("percent"))),
+                          numericInput("tempo", "Tempo", value = 1, min = 0),
                    ),
                    column(5,
-                          selectInput("taxa_tipo", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
-                          selectInput("tempo_tipo", "", choices = c("Anos" = "anos", "Meses" = "meses")),
+                          selectInput("taxa_tipo", "Periodicidade", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                          selectInput("tempo_tipo", "Unidade", choices = c("Anos" = "anos", "Meses" = "meses")),
                    ),
                ),
                actionButton("calcular3", "Calcular"),
@@ -103,15 +141,15 @@ ui <- navbarPage(
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInputIcon("capital2", "Capital Inicial:", value = 1000, min = 0, icon = list(icon("dollar-sign"))),
+                 numericInputIcon("capital2", "Capital Inicial", value = 1000, min = 0, icon = list(icon("dollar-sign"))),
                  fluidRow(
                    column(7,
-                          numericInputIcon("taxa2", "Taxa de Juros:", value = 5, min = 0,icon = list(NULL, icon("percent"))),
-                          numericInput("tempo2", "Tempo:", value = 1, min = 0),
+                          numericInputIcon("taxa2", "Taxa de Juros", value = 5, min = 0,icon = list(NULL, icon("percent"))),
+                          numericInput("tempo2", "Tempo", value = 1, min = 0),
                    ),
                    column(5,
-                          selectInput("taxa_tipo2", "", choices = c("Anual" = "ano", "Mensal" = "mes")),
-                          selectInput("tempo_tipo2", "", choices = c("Anos" = "anos", "Meses" = "meses")),
+                          selectInput("taxa_tipo2", "Periodicidade", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                          selectInput("tempo_tipo2", "Unidade", choices = c("Anos" = "anos", "Meses" = "meses")),
                    ),
                  ),
                  actionButton("calcular4", "Calcular"),
