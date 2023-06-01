@@ -102,7 +102,7 @@ ui <- navbarPage(
                           numericInput("tempo", "Tempo", value = 1, min = 0),
                    ),
                    column(5,
-                          selectInput("taxa_tipo", "Periodicidade", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                          selectInput("taxa_tipo", "Intervalo", choices = c("Anual" = "ano", "Mensal" = "mes")),
                           selectInput("tempo_tipo", "Unidade", choices = c("Anos" = "anos", "Meses" = "meses")),
                    ),
                ),
@@ -148,7 +148,7 @@ ui <- navbarPage(
                           numericInput("tempo2", "Tempo", value = 1, min = 0),
                    ),
                    column(5,
-                          selectInput("taxa_tipo2", "Periodicidade", choices = c("Anual" = "ano", "Mensal" = "mes")),
+                          selectInput("taxa_tipo2", "Intervalo", choices = c("Anual" = "ano", "Mensal" = "mes")),
                           selectInput("tempo_tipo2", "Unidade", choices = c("Anos" = "anos", "Meses" = "meses")),
                    ),
                  ),
@@ -186,9 +186,9 @@ ui <- navbarPage(
              sidebarPanel(
                h3("Dados de entrada"),
                numericInput("populacao", label = "População", value = 210000000, min=0),
-               numericInputIcon("grau_confianca", label = "Grau de Confiança:", value = 95, min=0, max=100,icon = list(NULL, icon("percent"))),
-               numericInputIcon("margem_erro", label = "Margem de Erro:", value = 1, min=0, max=100,icon = list(NULL, icon("percent"))),
-               numericInputIcon("proporcao", label = "Proporção: ",icon = list(NULL, icon("percent")), value = 50, min=0, max=100),
+               numericInputIcon("grau_confianca", label = "Grau de Confiança", value = 95, min=0, max=100,icon = list(NULL, icon("percent"))),
+               numericInputIcon("margem_erro", label = "Margem de Erro", value = 1, min=0, max=100,icon = list(NULL, icon("percent"))),
+               numericInputIcon("proporcao", label = "Proporção ",icon = list(NULL, icon("percent")), value = 50, min=0, max=100),
                actionButton("calcular2", "Calcular")
              ),
              mainPanel(
