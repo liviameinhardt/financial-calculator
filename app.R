@@ -39,7 +39,7 @@ ui <- navbarPage(
         color: #333;
       }
       .selectize-dropdown {
-        background-color: #f9f9f9;
+        background-color: #DCDCDC;
         color: #333;
         border: 1px solid #ccc;
       }
