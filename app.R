@@ -28,8 +28,8 @@ ui <- navbarPage(
         height: 38px;
         padding: 0;
         border-radius: 4px;
-        border: 1px solid #ccc;
-        background-color: #f9f9f9;
+        border: 0px solid #ccc;
+        background-color: #f4f9f8;
         color: #333;
       }
       .selectize-input {
