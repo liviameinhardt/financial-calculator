@@ -55,13 +55,23 @@ ui <- navbarPage(
         border-radius: 4px;
         border: 1px solid #ccc;
       }
+      #mySidebar {
+        position: fixed;
+        width: 300px;
+      }
+      
+      #myMain {
+        margin-left: 310px;
+      }
     "))
   ),
   includeScript(path = "themes.js"),
   tabPanel("Viabilidade do Projetos",
            fluidPage(
+             
              sidebarLayout(
                sidebarPanel(
+                 id = "mySidebar",
                  h3("Dados de entrada"),
                  numericInputIcon("tx_juros", label = "Taxa de juros", value = 10,icon = list(NULL, icon("percent"))),
                  textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
@@ -69,8 +79,9 @@ ui <- navbarPage(
                ),
                
                mainPanel(
+                 
                  tabsetPanel(
-                   
+                   # id = "myMain",
                    tabPanel("Investimentos",
                             h2("Resultados da Análise"),
                             tableOutput("tabela_resultados"),
