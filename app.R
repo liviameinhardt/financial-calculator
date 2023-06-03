@@ -11,6 +11,7 @@ thematic::thematic_shiny()
 # define a interface UI
 ui <- navbarPage(
   title = "Análise Financeira",
+  position = "fixed-top",
   prettySwitch(
     inputId = "themeToggle",
     label = "DarkMode"
@@ -22,6 +23,9 @@ ui <- navbarPage(
       }
       .shiny-input-container {
         width: 100%;
+      }
+      body > .container-fluid {
+        padding-top: 70px;  # Adjust this value depending on the height of your navbar
       }
       
       .selectize-control {
