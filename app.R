@@ -1,4 +1,5 @@
 library(ggplot2)
+library(plotly)
 library(shiny)
 library(shinythemes)
 source("utils.R")
@@ -63,8 +64,15 @@ ui <- navbarPage(
       #myMain {
         margin-left: 310px;
       }
+      
+  
+      
+      
     "))
   ),
+  
+  
+  
   includeScript(path = "themes.js"),
   tabPanel("Viabilidade do Projetos",
            fluidPage(
@@ -75,6 +83,7 @@ ui <- navbarPage(
                  h3("Dados de entrada"),
                  numericInputIcon("tx_juros", label = "Taxa de juros", value = 10,icon = list(NULL, icon("percent"))),
                  textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
+                 textInput("tx_juros_tabela", label = "Taxas para Comparação  (separado por vírgulas)", value = "0.1,0.5,1,2,3,5,7,9,11,13,15,20"),
                  actionButton("calcular", "Calcular")
                ),
                
@@ -85,16 +94,16 @@ ui <- navbarPage(
                    tabPanel("Investimentos",
                             h2("Resultados da Análise"),
                             tableOutput("tabela_resultados"),
-                            plotOutput("grafico_fluxo_caixa")
+                            plotlyOutput("grafico_fluxo_caixa")
                    ),
                    
                    tabPanel("Taxa de Juros",
                             h2("Métricas em Funçao da Taxa de Juros"),
                             tableOutput("tabela_resultados_juros"),
-                            plotOutput("grafico_vpl"),
-                            plotOutput("grafico_roi"),
-                            plotOutput("grafico_payback_simples"),
-                            plotOutput("grafico_payback_descontado")
+                            plotlyOutput("grafico_vpl"),
+                            plotlyOutput("grafico_roi"),
+                            plotlyOutput("grafico_payback_simples"),
+                            plotlyOutput("grafico_payback_descontado")
                    ),
               
                  )
@@ -241,22 +250,27 @@ server <- function(input, output) {
     
     #trata o input
     fluxo_caixa <- string_para_vetor(input$fluxo_caixa)
+    tx_juros_tabela <- string_para_vetor(input$tx_juros_tabela)/100
     tx_juros <- input$tx_juros/100
+    
+    if (!(tx_juros %in% tx_juros_tabela)) {
+      tx_juros_tabela <- append(tx_juros_tabela, tx_juros)
+    }
     
     #trata o output
     
     #analise de investimento
-    output$tabela_resultados <- renderTable({ gerar_tabela_investimento(fluxo_caixa, tx_juros) })
-    output$grafico_fluxo_caixa <- renderPlot({grafico_fluxo_caixa(fluxo_caixa)})
+    output$tabela_resultados <- renderTable({ gerar_tabela_investimento(fluxo_caixa, tx_juros) }, class = "custom-table")
+    output$grafico_fluxo_caixa <- renderPlotly({grafico_fluxo_caixa(fluxo_caixa)})
     
     
     #analise de taxa de juros
-    tabela_func_juros <-  gerar_tabela_juros(fluxo_caixa)
-    output$tabela_resultados_juros <- renderTable({tabela_func_juros })
-    output$grafico_vpl <- renderPlot({grafico_juros(tabela_func_juros,"vpl",tx_juros*100)})
-    output$grafico_roi <- renderPlot({grafico_juros(tabela_func_juros,"roi",tx_juros*100)})
-    output$grafico_payback_simples <- renderPlot({grafico_juros(tabela_func_juros,"payback_simples",tx_juros*100)})
-    output$grafico_payback_descontado <- renderPlot({grafico_juros(tabela_func_juros,"payback_descontado",tx_juros*100)})
+    tabela_func_juros <-  gerar_tabela_juros(fluxo_caixa,tx_juros_tabela)
+    output$tabela_resultados_juros <- renderTable({tabela_func_juros }, class = "custom-table")
+    output$grafico_vpl <- renderPlotly({grafico_juros(tabela_func_juros,"vpl",tx_juros*100)})
+    output$grafico_roi <- renderPlotly({grafico_juros(tabela_func_juros,"roi",tx_juros*100)})
+    output$grafico_payback_simples <- renderPlotly({grafico_juros(tabela_func_juros,"payback_simples",tx_juros*100)})
+    output$grafico_payback_descontado <- renderPlotly({grafico_juros(tabela_func_juros,"payback_descontado",tx_juros*100)})
     
   })
   
