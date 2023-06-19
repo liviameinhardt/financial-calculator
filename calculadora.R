@@ -1,3 +1,25 @@
+# MIT License
+#
+# Copyright (c) 2023 Ademir, Ciro, Edilton, Iara, Joao Victor, Livia, Lucas
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 ## Este modulo possui as funcoes da calculadora
 
 #calcula o VPL dado o fluxo de caixa e a taxa de juros
@@ -71,7 +93,7 @@ payback <- function(fluxo_caixa, taxa_juros) {
 
 
 calcular_tamanho_amostra <- function(populacao, grau_confianca, margem_erro, proporcao = 0.5) {
-  # Calcula o valor crÃ­tico (Z-score) baseado no grau de confianÃ§a
+  # Calcula o valor crítico (Z-score) baseado no grau de confiança
   z <- qnorm((1 + grau_confianca) / 2)
   n <- (z^2 * proporcao * (1 - proporcao)) / (margem_erro^2)
   
@@ -87,7 +109,7 @@ calcular_tamanho_amostra <- function(populacao, grau_confianca, margem_erro, pro
 }
 
 calcular_erro_amostral_prop <- function(grau_confianca, proporcao, tamanho_populacao) {
-  z <- qnorm((1 + grau_confianca) / 2)  # Valor crÃ­tico baseado no nÃ­vel de confianÃ§a
+  z <- qnorm((1 + grau_confianca) / 2)  # Valor crítico baseado no nível de confiança
   
   erro_amostral <- z * sqrt((proporcao * (1 - proporcao)) / tamanho_populacao)
   
