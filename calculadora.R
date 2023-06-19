@@ -59,7 +59,6 @@ roi <- function(fluxo_caixa, juros) {
   return(roi*100)
 }
 
-
 #calcula o tempo de payback simples e descontado dado o fluxo de caixa e a taxa de juros
 payback <- function(fluxo_caixa, taxa_juros) {
   
