@@ -66,16 +66,16 @@ ui <- navbarPage(
   ),
   
 
-  prettySwitch(
-    inputId = "themeToggle",
-    label = "DarkMode"
-  ),
+ div( class="mySidebar", prettySwitch(inputId = "themeToggle", label = "DarkMode")),
   includeScript(path = "themes.js"),
   tabPanel("Viabilidade do Projetos",
+           
            fluidPage(
              sidebarLayout(
+               
                sidebarPanel(
                  id = "mySidebar",
+                 prettySwitch(inputId = "themeToggle", label = "DarkMode"),
                  h3("Dados de entrada"),
                  numericInputIcon("tx_juros", label = "Taxa de juros", value = 10,icon = list(NULL, icon("percent"))),
                  textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
