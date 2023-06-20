@@ -33,6 +33,10 @@ thematic::thematic_shiny()
 
 # define a interface UI
 ui <- navbarPage(
+  footer = tags$footer(style = "position: fixed; bottom: 0; width: 100%; text-align: center; background-color: #f8f9fa;",
+                       tags$p("MIT License"),
+                       tags$p("Copyright (c) - 2023 Ademir, Ciro, Edilton, Iara, Joao Victor, Livia, Lucas")
+  ),
   title = "Análise Financeira",
   position = "fixed-top",
   prettySwitch(
@@ -92,11 +96,8 @@ ui <- navbarPage(
       
     "))
   ),
-  
-  
-  
   includeScript(path = "themes.js"),
-  tabPanel("Viabilidade do Projetos",
+  tabPanel("Viabilidade de Projetos",
            fluidPage(
              
              sidebarLayout(
@@ -112,7 +113,6 @@ ui <- navbarPage(
                mainPanel(
                  
                  tabsetPanel(
-                   # id = "myMain",
                    tabPanel("Investimentos",
                             h2("Resultados da Análise"),
                             tableOutput("tabela_resultados"),
@@ -127,11 +127,11 @@ ui <- navbarPage(
                             plotlyOutput("grafico_payback_simples"),
                             plotlyOutput("grafico_payback_descontado")
                    ),
-              
+                   
                  )
                )
              )
-        )
+           )
   ),
   
   tabPanel("Juros Simples",
@@ -151,8 +151,8 @@ ui <- navbarPage(
                           selectInput("taxa_tipo", "Intervalo", choices = c("Anual" = "ano", "Mensal" = "mes")),
                           selectInput("tempo_tipo", "Unidade", choices = c("Anos" = "anos", "Meses" = "meses")),
                    ),
-               ),
-               actionButton("calcular3", "Calcular"),
+                 ),
+                 actionButton("calcular3", "Calcular"),
                ),
                mainPanel(
                  fluidRow(
@@ -174,10 +174,13 @@ ui <- navbarPage(
                             textOutput("totalJuros"),
                           )
                    )
-                  ),
+                 ),                 fluidRow(
+                   column(12,
+                          plotlyOutput("graficoJurosSimples")
+                   ))
                )
              )
-          )
+           )
   ),
   
   tabPanel("Juros Composto",
@@ -220,45 +223,51 @@ ui <- navbarPage(
                             textOutput("totalJuros2"),
                           )
                    )
-                 ),
+                 ),                 fluidRow(
+                   column(12,
+                          plotlyOutput("graficoJurosCompostos")
+                   ))
                )
              )
            )
   ),
   tabPanel("Estatística",
            
-          fluidPage(
-           sidebarLayout(
-             sidebarPanel(
-               h3("Dados de entrada"),
-               numericInput("populacao", label = "População", value = 210000000, min=0),
-               numericInputIcon("grau_confianca", label = "Grau de Confiança", value = 95, min=0, max=100,icon = list(NULL, icon("percent"))),
-               numericInputIcon("margem_erro", label = "Margem de Erro", value = 1, min=0, max=100,icon = list(NULL, icon("percent"))),
-               numericInputIcon("proporcao", label = "Proporção ",icon = list(NULL, icon("percent")), value = 50, min=0, max=100),
-               actionButton("calcular2", "Calcular")
-             ),
-             mainPanel(
-               #tabsetPanel(
+           fluidPage(
+             sidebarLayout(
+               sidebarPanel(
+                 h3("Dados de entrada"),
+                 numericInput("populacao", label = "População", value = 210000000, min=0),
+                 numericInputIcon("grau_confianca", label = "Grau de Confiança", value = 95, min=0, max=100,icon = list(NULL, icon("percent"))),
+                 numericInputIcon("margem_erro", label = "Margem de Erro", value = 1, min=0, max=100,icon = list(NULL, icon("percent"))),
+                 numericInputIcon("proporcao", label = "Proporção ",icon = list(NULL, icon("percent")), value = 50, min=0, max=100),
+                 actionButton("calcular2", "Calcular")
+               ),
+               mainPanel(
+                 #tabsetPanel(
                  #tabPanel("Resultados",
-                    fluidRow(
-                      column(4, 
-                             wellPanel(
-                               h5("Tamanho da Amostra"),
-                               textOutput("tamanho_amostra")
-                             )
-                      ),
-                      column(5, 
-                             wellPanel(
-                               h5("Erro Amostral - Proporção (%)"),
-                               textOutput("erro_amostral_prop")
-                             )
-                      )
-                    )
+                 fluidRow(
+                   column(4, 
+                          wellPanel(
+                            h5("Tamanho da Amostra"),
+                            textOutput("tamanho_amostra")
+                          )
+                   ),
+                   column(5, 
+                          wellPanel(
+                            h5("Erro Amostral - Proporção (%)"),
+                            textOutput("erro_amostral_prop")
+                          )
+                   ),               fluidRow(
+                     column(12,
+                            plotlyOutput("graficoProporcao")
+                     ))
+                 )
                  #)
-               #)
+                 #)
+               )
              )
            )
-          )
   )
 )
 
@@ -266,7 +275,6 @@ ui <- navbarPage(
 
 # define o servidor
 server <- function(input, output) {
-  
   # reage ao botão calcular
   observeEvent(input$calcular, {
     
@@ -288,7 +296,11 @@ server <- function(input, output) {
     
     #analise de taxa de juros
     tabela_func_juros <-  gerar_tabela_juros(fluxo_caixa,tx_juros_tabela)
-    output$tabela_resultados_juros <- renderTable({tabela_func_juros }, class = "custom-table")
+    output$tabela_resultados_juros <- renderTable({
+      df_temp <- tabela_func_juros
+      colnames(df_temp) <- c("Taxa de Juros", "VPL", "ROI", "Payback Simples", "Payback Descontado")
+      df_temp
+    })
     output$grafico_vpl <- renderPlotly({grafico_juros(tabela_func_juros,"vpl",tx_juros*100)})
     output$grafico_roi <- renderPlotly({grafico_juros(tabela_func_juros,"roi",tx_juros*100)})
     output$grafico_payback_simples <- renderPlotly({grafico_juros(tabela_func_juros,"payback_simples",tx_juros*100)})
@@ -309,11 +321,28 @@ server <- function(input, output) {
     output$tamanho_amostra <- renderText({
       tamanho_amostra <- calcular_tamanho_amostra(populacao, confianca, margem_erro, proporcao)
       paste(tamanho_amostra)})
-      #paste("Tamanho da amostra: ",tamanho_amostra)})
+    #paste("Tamanho da amostra: ",tamanho_amostra)})
     
     output$erro_amostral_prop <- renderText({
       erro_amostral_prop <- calcular_erro_amostral_prop(confianca, proporcao, populacao)
       paste(erro_amostral_prop)
+    })
+    
+    output$graficoProporcao <- renderPlotly({
+      proporcao_estimada <- proporcao
+      erro_amostral <- calcular_erro_amostral_prop(confianca, proporcao, populacao)
+      
+      x <- seq(proporcao_estimada - 3 * erro_amostral, proporcao_estimada + 3 * erro_amostral, length.out = 100)
+
+      densidade <- dnorm(x, mean = proporcao_estimada, sd = erro_amostral)
+      
+      df <- data.frame(x = x, densidade = densidade)
+      ggplot(df, aes(x = x, y = densidade)) +
+        geom_line() +
+        geom_area(fill = "blue", alpha = 0.3) +
+        labs(title = "Distribuicao de Proporcao Estimada",
+             x = "Proporcao",
+             y = "Densidade")
     })
     
   })
@@ -346,6 +375,16 @@ server <- function(input, output) {
     output$totalJuros <- renderText({
       paste0("R$ ", round(juros, 2))
     })
+    
+    tempo_seq <- seq(0, tempo)
+    montante_seq <- capital + capital * taxa * tempo_seq
+    data <- data.frame(tempo = tempo_seq, montante = montante_seq)
+    
+    output$graficoJurosSimples <- renderPlotly({
+      ggplot(data, aes(x = tempo, y = montante)) +
+        geom_line() +
+        labs(x = "Tempo", y = "Montante", title = "Evolucao do Montante ao Longo do Tempo")
+    })
   })
   
   # Botão de calcular juros composto
@@ -375,6 +414,16 @@ server <- function(input, output) {
     })
     output$totalJuros2 <- renderText({
       paste0("R$ ", round(juros, 2))
+    })
+    
+    tempo_seq <- seq(0, tempo)
+    montante_seq <- capital * (1 + taxa)^tempo_seq
+    data <- data.frame(tempo = tempo_seq, montante = montante_seq)
+    
+    output$graficoJurosCompostos <- renderPlotly({
+      ggplot(data, aes(x = tempo, y = montante)) +
+        geom_line() +
+        labs(x = "Tempo", y = "Montante", title = "Evolucao do Montante ao Longo do Tempo")
     })
   })
   

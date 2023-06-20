@@ -1,4 +1,27 @@
+# MIT License
+#
+# Copyright (c) 2023 Ademir, Ciro, Edilton, Iara, Joao Victor, Livia, Lucas
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 #este modulo possui as funcoes extras para processar os inputs do usuario e os outputs do app
+library(plotly)
 
 # transforma a string do input em um vetor 
 string_para_vetor <- function(string) {
@@ -26,19 +49,24 @@ gerar_tabela_investimento <- function(fluxo_caixa, juros) {
 #gera o grafico de barras do fluxo de caixa
 grafico_fluxo_caixa <- function(fluxo_caixa){
   
-      df <- data.frame(valores = fluxo_caixa, cor = ifelse(fluxo_caixa > 0, "verde", "vermelho"))
+  df <- data.frame(Movimentação = 0:(length(fluxo_caixa)-1),
+                   Valor = fluxo_caixa, 
+                   Tipo = ifelse(fluxo_caixa > 0, "Entrada de caixa", "Saída de caixa"))
   
-      fig = ggplot(df, aes(x = 0:(length(valores)-1), y = valores, fill = cor) ) + 
-      geom_bar(stat = "identity", width = 0.5) +
-      geom_text(aes(label = valores), position = position_stack(vjust = 0.5), color = "black") +
-      scale_fill_manual(values = c(verde = "green", vermelho = "red")) +
-      theme_minimal() +
-      ggtitle("Fluxo de Caixa") + xlab("Tempo") + ylab("Valores")+
-      guides(fill = "none") # remove a legenda das cores
+  fig <- ggplot(df, aes(x = Movimentação, y = Valor, fill = Tipo) ) + 
+    geom_bar(stat = "identity", width = 0.5) +
+    geom_text(aes(label = Valor), position = position_stack(vjust = 0.5), color = "black") +
+    scale_fill_manual(values = c("Entrada de caixa" = "green", "Saída de caixa" = "red")) +
+    theme_minimal() +
+    ggtitle("Fluxo de Caixa") + xlab("Tempo") + ylab("Valores") +
+    guides(fill = "none") # remove a legenda das cores
   
-      return(fig)
-      
+  # Converte o gráfico ggplot para um gráfico plotly interativo
+  p <- ggplotly(fig, tooltip = c("Movimentação", "Valor", "Tipo"))
+  
+  return(p)
 }
+
 
 #gera a tabela das metricas em funcao da taxa de juros
 gerar_tabela_juros <- function(fluxo_caixa,taxas_juros){
