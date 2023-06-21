@@ -68,7 +68,7 @@ payback <- function(fluxo_caixa, taxa_juros) {
   #payback simples
   soma_acumulada = cumsum(fluxo_caixa)
   for (tempo in 1:length(soma_acumulada)) { 
-    if (soma_acumulada[tempo] > 0) {  
+    if (soma_acumulada[tempo] >= 0) {  
       payback_simples = (tempo-1) + (soma_acumulada[tempo-1] + fluxo_caixa[tempo])/fluxo_caixa[tempo]
       break
     } 
@@ -81,7 +81,7 @@ payback <- function(fluxo_caixa, taxa_juros) {
   soma_acumulada = cumsum(fluxo_presente)
   
   for (tempo in 1:length(soma_acumulada)) { 
-    if (soma_acumulada[tempo] > 0) {  
+    if (soma_acumulada[tempo] >= 0) {  
       payback_descontado = (tempo-1) + (soma_acumulada[tempo-1] + fluxo_presente[tempo])/fluxo_presente[tempo]
       break
     } 
