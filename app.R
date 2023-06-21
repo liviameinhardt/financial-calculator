@@ -268,6 +268,16 @@ ui <- navbarPage(
                )
              )
            )
+  ),
+  tabPanel("Formulas",
+           
+           mainPanel(
+            
+            tags$img(src = "https://raw.githubusercontent.com/liviameinhardt/calculadora_financeira_R/main/formulas-1.png",
+                     style = "width: 100%; height: 100%;")
+            
+             
+           )
   )
 )
 
@@ -283,6 +293,7 @@ server <- function(input, output) {
     tx_juros_tabela <- string_para_vetor(input$tx_juros_tabela)/100
     tx_juros <- input$tx_juros/100
     
+    #adiciona a taxa de juros selecionada na
     if (!(tx_juros %in% tx_juros_tabela)) {
       tx_juros_tabela <- append(tx_juros_tabela, tx_juros)
     }
