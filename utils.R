@@ -30,7 +30,7 @@ string_para_vetor <- function(string) {
   return(vetor)
 }
 
-# gera a tabela com os resultados da an√°lise
+# gera a tabela com os resultados da analise
 gerar_tabela_investimento <- function(fluxo_caixa, juros) {
   
   resultados <- c(
@@ -51,18 +51,18 @@ grafico_fluxo_caixa <- function(fluxo_caixa){
   
   df <- data.frame(MovimentaÁ„o = 0:(length(fluxo_caixa)-1),
                    Valor = fluxo_caixa, 
-                   Tipo = ifelse(fluxo_caixa > 0, "Entrada de caixa", "SaÌda de caixa"))
+                   Tipo = ifelse(fluxo_caixa > 0, "Entrada de caixa", "Saida de caixa"))
   
   fig <- ggplot(df, aes(x = MovimentaÁ„o, y = Valor, fill = Tipo) ) + 
     geom_bar(stat = "identity", width = 0.5) +
     geom_text(aes(label = Valor), position = position_stack(vjust = 0.5), color = "black") +
-    scale_fill_manual(values = c("Entrada de caixa" = "green", "SaÌda de caixa" = "red")) +
+    scale_fill_manual(values = c("Entrada de caixa" = "green", "Saida de caixa" = "red")) +
     theme_minimal() +
     ggtitle("Fluxo de Caixa") + xlab("Tempo") + ylab("Valores") +
     guides(fill = "none") # remove a legenda das cores
   
-  # Converte o gr·fico ggplot para um gr·fico plotly interativo
-  p <- ggplotly(fig, tooltip = c("MovimentaÁ„o", "Valor", "Tipo"))
+  # Converte o grafico ggplot para um grafico plotly interativo
+  p <- ggplotly(fig, tooltip = c("Movimentacao", "Valor", "Tipo"))
   
   return(p)
 }
@@ -74,7 +74,7 @@ gerar_tabela_juros <- function(fluxo_caixa,taxas_juros){
   #taxas de juros para considerar
   #taxas_juros = c(0.01,0.05,0.1,0.15,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9)
   
-  # Cria um dataframe vazio para armazenar as m√©tricas
+  # Cria um dataframe vazio para armazenar as metricas
   resultados <- data.frame(taxa_juros = taxas_juros,
                            vpl = numeric(length(taxas_juros)),
                            roi = numeric(length(taxas_juros)),
@@ -82,7 +82,7 @@ gerar_tabela_juros <- function(fluxo_caixa,taxas_juros){
                            payback_descontado = numeric(length(taxas_juros)))
   
   
-  # Preenche o dataframe com as m√©tricas para cada taxa de juros
+  # Preenche o dataframe com as metricas para cada taxa de juros
   for (i in seq_along(taxas_juros)) {
     resultados$vpl[i] <- vpl(fluxo_caixa, taxas_juros[i])
     resultados$roi[i] <- roi(fluxo_caixa, taxas_juros[i])
@@ -109,13 +109,9 @@ grafico_juros <- function(df,nome_coluna,taxa_selecionada){
                  color = ~taxa, colors = c(Selecionada = "red", Outras = "grey"),
                  type = "scatter", mode = "markers") %>%
     
-    layout(title = paste0(toupper(nome_coluna), " em Fun√ß√£o da Taxa de Juros"),
+    layout(title = paste0(toupper(nome_coluna), " em Funcao da Taxa de Juros"),
            xaxis = list(title = "Juros"), yaxis = list(title = nome_coluna), showlegend = TRUE)
   
   return(fig)
 }
-
-
-# teste2
-
 

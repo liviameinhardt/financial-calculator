@@ -39,7 +39,7 @@ tir <- function(fluxo_caixa) {
   tryCatch({
     tir_ = (uniroot(f, c(0, 1))$root) 
     return(tir_*100 )},
-    error = function(e){return('-')} #se a raiz da funcao nÃ£o existir
+    error = function(e){return('-')} #se a raiz da funcao nao existir
   )
   
 }
@@ -92,7 +92,7 @@ payback <- function(fluxo_caixa, taxa_juros) {
 
 
 calcular_tamanho_amostra <- function(populacao, grau_confianca, margem_erro, proporcao = 0.5) {
-  # Calcula o valor crítico (Z-score) baseado no grau de confiança
+  # Calcula o valor critico (Z-score) baseado no grau de confianca
   z <- qnorm((1 + grau_confianca) / 2)
   n <- (z^2 * proporcao * (1 - proporcao)) / (margem_erro^2)
   
@@ -108,7 +108,7 @@ calcular_tamanho_amostra <- function(populacao, grau_confianca, margem_erro, pro
 }
 
 calcular_erro_amostral_prop <- function(grau_confianca, proporcao, tamanho_populacao) {
-  z <- qnorm((1 + grau_confianca) / 2)  # Valor crítico baseado no nível de confiança
+  z <- qnorm((1 + grau_confianca) / 2)  # Valor critico baseado no nivel de confianca
   
   erro_amostral <- z * sqrt((proporcao * (1 - proporcao)) / tamanho_populacao)
   

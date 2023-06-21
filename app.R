@@ -37,7 +37,7 @@ ui <- navbarPage(
                        tags$p("MIT License"),
                        tags$p("Copyright (c) - 2023 Ademir, Ciro, Edilton, Iara, Joao Victor, Livia, Lucas")
   ),
-  title = "Análise Financeira",
+  title = "Analise Financeira",
   position = "fixed-top",
   prettySwitch(
     inputId = "themeToggle",
@@ -105,8 +105,8 @@ ui <- navbarPage(
                  id = "mySidebar",
                  h3("Dados de entrada"),
                  numericInputIcon("tx_juros", label = "Taxa de juros", value = 10,icon = list(NULL, icon("percent"))),
-                 textInput("fluxo_caixa", label = "Fluxo de caixa (separado por vírgulas)", value = "-100,-100,100,100,200"),
-                 textInput("tx_juros_tabela", label = "Taxas para Comparação  (separado por vírgulas)", value = "0.1,0.5,1,2,3,5,7,9,11,13,15,20"),
+                 textInput("fluxo_caixa", label = "Fluxo de caixa (separado por virgulas)", value = "-100,-100,100,100,200"),
+                 textInput("tx_juros_tabela", label = "Taxas para Comparacao  (separado por virgulas)", value = "0.1,0.5,1,2,3,5,7,9,11,13,15,20"),
                  actionButton("calcular", "Calcular")
                ),
                
@@ -120,7 +120,7 @@ ui <- navbarPage(
                    ),
                    
                    tabPanel("Taxa de Juros",
-                            h2("Métricas em Funçao da Taxa de Juros"),
+                            h2("Metricas em Funcao da Taxa de Juros"),
                             tableOutput("tabela_resultados_juros"),
                             plotlyOutput("grafico_vpl"),
                             plotlyOutput("grafico_roi"),
@@ -231,16 +231,16 @@ ui <- navbarPage(
              )
            )
   ),
-  tabPanel("Estatística",
+  tabPanel("Estatistica",
            
            fluidPage(
              sidebarLayout(
                sidebarPanel(
                  h3("Dados de entrada"),
-                 numericInput("populacao", label = "População", value = 210000000, min=0),
-                 numericInputIcon("grau_confianca", label = "Grau de Confiança", value = 95, min=0, max=100,icon = list(NULL, icon("percent"))),
+                 numericInput("populacao", label = "Populacao", value = 210000000, min=0),
+                 numericInputIcon("grau_confianca", label = "Grau de Confianca", value = 95, min=0, max=100,icon = list(NULL, icon("percent"))),
                  numericInputIcon("margem_erro", label = "Margem de Erro", value = 1, min=0, max=100,icon = list(NULL, icon("percent"))),
-                 numericInputIcon("proporcao", label = "Proporção ",icon = list(NULL, icon("percent")), value = 50, min=0, max=100),
+                 numericInputIcon("proporcao", label = "Proporcao ",icon = list(NULL, icon("percent")), value = 50, min=0, max=100),
                  actionButton("calcular2", "Calcular")
                ),
                mainPanel(
@@ -255,7 +255,7 @@ ui <- navbarPage(
                    ),
                    column(5, 
                           wellPanel(
-                            h5("Erro Amostral - Proporção (%)"),
+                            h5("Erro Amostral - Proporcao (%)"),
                             textOutput("erro_amostral_prop")
                           )
                    ),               fluidRow(
@@ -275,7 +275,7 @@ ui <- navbarPage(
 
 # define o servidor
 server <- function(input, output) {
-  # reage ao botão calcular
+  # reage ao botao calcular
   observeEvent(input$calcular, {
     
     #trata o input
@@ -308,7 +308,7 @@ server <- function(input, output) {
     
   })
   
-  #Botão de Calcular de "Estatísticas"
+  #Botao de Calcular de "Estatisticas"
   observeEvent(input$calcular2, {
     
     #trata o input
@@ -347,17 +347,17 @@ server <- function(input, output) {
     
   })
   
-  # Botão de calcular juros simples
+  # Botao de calcular juros simples
   observeEvent(input$calcular3, {
     capital <- input$capital
     tempo <- input$tempo
     taxa <- input$taxa / 100
-    # Se a taxa é mensal e o tempo é anual, multiplica a taxa por 12
+    # Se a taxa e mensal e o tempo e anual, multiplica a taxa por 12
     if (input$taxa_tipo == "mes" && input$tempo_tipo == "anos") {
       taxa <- taxa * 12
     }
     
-    # Se a taxa é anual e o tempo é mensal, divide o tempo por 12
+    # Se a taxa e anual e o tempo e mensal, divide o tempo por 12
     else if (input$taxa_tipo == "ano" && input$tempo_tipo == "meses") {
       taxa <- taxa / 12
     }
@@ -387,17 +387,17 @@ server <- function(input, output) {
     })
   })
   
-  # Botão de calcular juros composto
+  # Botao de calcular juros composto
   observeEvent(input$calcular4, {
     capital <- input$capital2
     tempo <- input$tempo2
     taxa <- input$taxa2 / 100
-    # Se a taxa é mensal e o tempo é anual, multiplica a taxa por 12
+    # Se a taxa e mensal e o tempo e anual, multiplica a taxa por 12
     if (input$taxa_tipo2 == "mes" && input$tempo_tipo2 == "anos") {
       tempo <- tempo * 12
     }
     
-    # Se a taxa é anual e o tempo é mensal, divide o tempo por 12
+    # Se a taxa e anual e o tempo e mensal, divide o tempo por 12
     else if (input$taxa_tipo2 == "ano" && input$tempo_tipo2 == "meses") {
       tempo <- tempo / 12
     }
