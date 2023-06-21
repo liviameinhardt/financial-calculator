@@ -49,11 +49,11 @@ gerar_tabela_investimento <- function(fluxo_caixa, juros) {
 #gera o grafico de barras do fluxo de caixa
 grafico_fluxo_caixa <- function(fluxo_caixa){
   
-  df <- data.frame(Movimentação = 0:(length(fluxo_caixa)-1),
+  df <- data.frame(Movimentacao = 0:(length(fluxo_caixa)-1),
                    Valor = fluxo_caixa, 
                    Tipo = ifelse(fluxo_caixa > 0, "Entrada de caixa", "Saida de caixa"))
   
-  fig <- ggplot(df, aes(x = Movimentação, y = Valor, fill = Tipo) ) + 
+  fig <- ggplot(df, aes(x = Movimentacao, y = Valor, fill = Tipo) ) + 
     geom_bar(stat = "identity", width = 0.5) +
     geom_text(aes(label = Valor), position = position_stack(vjust = 0.5), color = "black") +
     scale_fill_manual(values = c("Entrada de caixa" = "green", "Saida de caixa" = "red")) +
