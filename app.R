@@ -274,7 +274,8 @@ ui <- navbarPage(
            mainPanel(
             
             tags$img(src = "https://raw.githubusercontent.com/liviameinhardt/calculadora_financeira_R/main/formulas-1.png",
-                     style = "width: 100%; height: 100%;")
+                     style = "width: 100%; height: 100%;"),
+            verbatimTextOutput("textRefs")
             
              
            )
@@ -436,6 +437,11 @@ server <- function(input, output) {
         geom_line() +
         labs(x = "Tempo", y = "Montante", title = "Evolucao do Montante ao Longo do Tempo")
     })
+  })
+
+  output$textRefs <- renderText({
+    "Fórmulas Financeiras: Cálculo Financeiro das Tesourarias: Bancos e Empresas,  José Roberto Securato;
+    Fórmulas Estatísticas: Sampling Techniques (Técnicas de Amostragem) por William G. Cochran."
   })
   
 }
