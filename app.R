@@ -45,6 +45,7 @@ ui <- navbarPage(
   ),
   tags$head(
     tags$style(HTML("
+     
       .form-group {
         margin-bottom: 15px;
       }
@@ -273,9 +274,10 @@ ui <- navbarPage(
            
            mainPanel(
             
+             verbatimTextOutput("textRefs"),
             tags$img(src = "https://raw.githubusercontent.com/liviameinhardt/calculadora_financeira_R/main/formulas-1.png",
                      style = "width: 100%; height: 100%;"),
-            verbatimTextOutput("textRefs")
+           
             
              
            )
@@ -440,8 +442,12 @@ server <- function(input, output) {
   })
 
   output$textRefs <- renderText({
-    "Fórmulas Financeiras: Cálculo Financeiro das Tesourarias: Bancos e Empresas,  José Roberto Securato;
-    Fórmulas Estatísticas: Sampling Techniques (Técnicas de Amostragem) por William G. Cochran."
+    "Referências:
+Fórmulas Financeiras: Cálculo Financeiro das Tesourarias: Bancos e Empresas,  José Roberto Securato;
+Fórmulas Estatísticas: Sampling Techniques (Técnicas de Amostragem) por William G. Cochran."
+    
+    
+    
   })
   
 }
