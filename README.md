@@ -2,6 +2,8 @@
 
 Calculadora Financeira feita em Shinny (R) para a disciplina eletiva: Introdução ao R da EPGE
 
+Disponível em: [calculadora-financeira-grupo6.shinyapps.i](https://calculadora-financeira-grupo6.shinyapps.io/calculadora_financeira_R/)
+
 ## Referências
 
 Inspiração: [Faz a conta](https://fazaconta.com/index.htm )
