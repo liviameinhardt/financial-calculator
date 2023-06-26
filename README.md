@@ -13,4 +13,5 @@ Fórmulas Financeiras: [Cálculo Financeiro das Tesourarias: Bancos e Empresas, 
 Fórmulas Estatísticas: ["Sampling Techniques" (Técnicas de Amostragem) por William G. Cochran](https://www.amazon.com.br/Sampling-Techniques-William-G-Cochran/dp/047116240X)
 
 Shinny: [Documentaçao](https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html)
+- introducao: https://shiny.posit.co/r/getstarted/shiny-basics/lesson1/index.html
 - temas: https://rstudio.github.io/shinythemes/#:~:text=If%20you%20want%20to%20quickly,theme%20selector%20in%20action%20here.
