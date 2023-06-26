@@ -1,0 +1,13 @@
+name: calculadora_financeira_R
+title: calculadora_financeira_R
+username:
+account: calculadora-financeira-grupo6
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9367367
+bundleId: 7389888
+url: https://calculadora-financeira-grupo6.shinyapps.io/calculadora_financeira_R/
+when: 1687799795.5633
+lastSyncTime: 1687799795.56331
+asMultiple: FALSE
+asStatic: FALSE
